@@ -195,16 +195,17 @@ class ViewController: UIViewController {
         // background color
         //view.backgroundColor = defaultBackgroundColor
         
-        // Navigation Controller
-        self.navigationItem.title = "날씨"
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        
-        
         // -- UISearchController
-        let searchController = UISearchController(searchResultsController: nil)
+        let searchController = UISearchController(searchResultsController: SearchViewController())
         searchController.searchBar.placeholder = "도시 검색"
-        searchController.searchBar.backgroundColor = .systemBackground
+        //searchController.searchBar.backgroundColor = .systemBackground
+        
+        // Navigation Controller
+        //self.navigationItem.title = "날씨"
+        self.title = "날씨"
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.searchController = searchController
+        
         
         
         
@@ -253,7 +254,7 @@ extension ViewController {
     // layout by Snapkit
     private func autoLayout() {
         scrollView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.top.equalToSuperview()//(self.view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.bottom.equalToSuperview()
             //make.edges.equalToSuperview()
         }

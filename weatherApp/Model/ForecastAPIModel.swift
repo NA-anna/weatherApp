@@ -6,21 +6,7 @@
 //
 
 import Foundation
-import CoreLocation
 
-//
-struct Location: Equatable {
-    
-    var name: String?
-    var latitude: Double
-    var longitude: Double
-    
-    var location: CLLocation {
-        return CLLocation(latitude: latitude, longitude: longitude)
-    }
-}
-
-//
 struct ForecastInfo: Codable {
     
     var cod     : String? = nil
