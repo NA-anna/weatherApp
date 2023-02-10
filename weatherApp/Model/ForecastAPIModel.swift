@@ -65,6 +65,7 @@ struct List: Codable {
     var pop        : Float?       = nil
     var sys        : Sys?       = Sys()
     var dtTxt      : String?    = nil
+    var dtKR       : String?    = nil   //가공 by 나유진
     
     enum CodingKeys: String, CodingKey {
         case dt         = "dt"
@@ -87,13 +88,17 @@ struct List: Codable {
         clouds     = try values.decodeIfPresent(Clouds.self    , forKey: .clouds     )
         wind       = try values.decodeIfPresent(Wind.self      , forKey: .wind       )
         visibility = try values.decodeIfPresent(Int.self       , forKey: .visibility )
-        pop        = try values.decodeIfPresent(Float.self       , forKey: .pop        )
+        pop        = try values.decodeIfPresent(Float.self     , forKey: .pop        )
         sys        = try values.decodeIfPresent(Sys.self       , forKey: .sys        )
         dtTxt      = try values.decodeIfPresent(String.self    , forKey: .dtTxt      )
         
     }
     
     init() {
+        if let dtTxt = dtTxt, let date = dtTxt.toDate(){
+            dtKR = date.dtToTimeWithLetter(36000)
+        }
+        
     }
     
 }

@@ -63,6 +63,7 @@ class ViewController: UIViewController {
     }()
     var tblVwHourlyWeather = { () -> UITableView in
         let tableView = UITableView()
+        tableView.backgroundColor = .clear
         return tableView
     }()
     // 콜렉션 뷰 생성
@@ -89,9 +90,101 @@ class ViewController: UIViewController {
     }()
     lazy var mapView = { () -> MKMapView in
         let mapView = MKMapView()
-        mapView.layer.cornerRadius = 5
+        mapView.layer.cornerRadius = 10
         return mapView
         
+    }()
+    private let vwHuminity: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.layer.cornerRadius = 10
+        return view
+    }()
+    private let lblHuminityTitle: UILabel = {
+        let label = UILabel()
+        label.text = "습도"
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize:20)
+        return label
+    }()
+    private let lblHuminityValue: UILabel = {
+        let label = UILabel()
+        label.text = "33%"
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = .boldSystemFont(ofSize: 50)
+        return label
+    }()
+    private let vwClouds: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.layer.cornerRadius = 10
+        return view
+    }()
+    private let lblCloudsTitle: UILabel = {
+        let label = UILabel()
+        label.text = "구름"
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize:20)
+        return label
+    }()
+    private let lblCloudsValue: UILabel = {
+        let label = UILabel()
+        label.text = "33%"
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = .boldSystemFont(ofSize: 50)
+        return label
+    }()
+    private let vwWind: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.layer.cornerRadius = 10
+        return view
+    }()
+    private let lblWindTitle: UILabel = {
+        let label = UILabel()
+        label.text = "바람"
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize:20)
+        return label
+    }()
+    private let lblWindValue: UILabel = {
+        let label = UILabel()
+        label.text = "33m/s"
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = .boldSystemFont(ofSize: 50)
+        label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping
+        return label
+    }()
+    private let vwPressure: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.layer.cornerRadius = 10
+        return view
+    }()
+    private let lblPressureTitle: UILabel = {
+        let label = UILabel()
+        label.text = "기압"
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize:20)
+        return label
+    }()
+    private let lblPressureValue: UILabel = {
+        let label = UILabel()
+        label.text = "33hpa"
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = .boldSystemFont(ofSize: 50)
+        label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping
+        return label
     }()
     
     
@@ -100,7 +193,7 @@ class ViewController: UIViewController {
         
         
         // background color
-        view.backgroundColor = defaultBackgroundColor
+        //view.backgroundColor = defaultBackgroundColor
         
         // Navigation Controller
         self.navigationItem.title = "날씨"
@@ -141,6 +234,18 @@ extension ViewController {
              tblVwHourlyWeather, tblVwDailyWeather,
              mapView].map{ self.contentView.addSubview($0)}
         contentView.addSubview(cltVwHourlyWeather)
+        contentView.addSubview(vwHuminity)
+        vwHuminity.addSubview(lblHuminityTitle)
+        vwHuminity.addSubview(lblHuminityValue)
+        contentView.addSubview(vwClouds)
+        vwClouds.addSubview(lblCloudsTitle)
+        vwClouds.addSubview(lblCloudsValue)
+        contentView.addSubview(vwWind)
+        vwWind.addSubview(lblWindTitle)
+        vwWind.addSubview(lblWindValue)
+        contentView.addSubview(vwPressure)
+        vwPressure.addSubview(lblPressureTitle)
+        vwPressure.addSubview(lblPressureValue)
         
         
     }
@@ -186,7 +291,64 @@ extension ViewController {
             make.leading.trailing.equalToSuperview().inset(10)
             make.top.equalTo(self.tblVwDailyWeather.snp.bottom).offset(10)
             make.height.equalTo(self.mapView.snp.width)
+        }
+        vwHuminity.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(10)
+            make.top.equalTo(self.mapView.snp.bottom).offset(10)
+            make.trailing.equalTo(self.view.snp.centerX).offset(-5)
+            make.height.equalTo(self.vwHuminity.snp.width)
+        }
+        vwClouds.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.snp.centerX).offset(5)
+            make.trailing.equalToSuperview().inset(10)
+            make.top.equalTo(self.mapView.snp.bottom).offset(10)
+            make.height.equalTo(self.vwClouds.snp.width)
+        }
+        vwWind.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(10)
+            make.top.equalTo(self.vwHuminity.snp.bottom).offset(10)
+            make.trailing.equalTo(self.view.snp.centerX).offset(-5)
+            make.height.equalTo(self.vwWind.snp.width)
             make.bottom.equalToSuperview() // 이것이 중요함
+        }
+        vwPressure.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.snp.centerX).offset(5)
+            make.trailing.equalToSuperview().inset(10)
+            make.top.equalTo(self.vwClouds.snp.bottom).offset(10)
+            make.height.equalTo(self.vwPressure.snp.width)
+            make.bottom.equalToSuperview() // 이것이 중요함
+        }
+        lblHuminityTitle.snp.makeConstraints { make in
+            make.leading.top.trailing.equalToSuperview()
+            make.height.equalTo(self.vwHuminity.snp.height).dividedBy(3)
+        }
+        lblHuminityValue.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(lblHuminityTitle.snp.bottom)
+        }
+        lblCloudsTitle.snp.makeConstraints { make in
+            make.leading.top.trailing.equalToSuperview()
+            make.height.equalTo(self.vwHuminity.snp.height).dividedBy(3)
+        }
+        lblCloudsValue.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(lblCloudsTitle.snp.bottom)
+        }
+        lblWindTitle.snp.makeConstraints { make in
+            make.leading.top.trailing.equalToSuperview()
+            make.height.equalTo(self.vwHuminity.snp.height).dividedBy(3)
+        }
+        lblWindValue.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(lblWindTitle.snp.bottom)
+        }
+        lblPressureTitle.snp.makeConstraints { make in
+            make.leading.top.trailing.equalToSuperview()
+            make.height.equalTo(self.vwHuminity.snp.height).dividedBy(3)
+        }
+        lblPressureValue.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(lblPressureTitle.snp.bottom)
         }
     }
     
@@ -221,46 +383,76 @@ extension ViewController {
            let weatherName = weather[0].main,
            let temp = main.temp,
            let tempMax = main.tempMax,
-           let tempMin = main.tempMin
+           let tempMin = main.tempMin,
+           let coord = weatherInfo.coord, let lat = coord.lat, let lon = coord.lon,
+           let humidity = main.humidity,
+           let clouds = weatherInfo.clouds, let cloudsVal = clouds.all,
+           let wind = weatherInfo.wind, let speed = wind.speed,
+           let pressure = main.pressure
         {
+            print(weatherName, weatherName.lowercased())
             if let backgroundImage = UIImage(named: weatherName.lowercased()) {
                 self.scrollView.backgroundColor = UIColor(patternImage: backgroundImage)
-            }else {
-                self.view.backgroundColor = defaultBackgroundColor
             }
             self.lblCity.text = cityName
             self.lblDegree.text = "\(Temperature(kelvin: temp).toCelcius)º"
             self.lblWeather.text = weatherName
             self.lblMaxMinDegree.text = "최고 \(Temperature(kelvin: tempMax).toCelcius)º | 최저 \(Temperature(kelvin: tempMin).toCelcius)º"
+            
+            // 지도 mapView
+            let span = MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2)
+            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+            let region = MKCoordinateRegion(center: coordinate, span: span)
+            self.mapView.region = region
+            
+            // 습도 구름
+            self.lblHuminityValue.text = "\(humidity)%"
+            self.lblCloudsValue.text = "\(cloudsVal)%"
+            self.lblWindValue.text = "\(speed) m/s"
+            self.lblPressureValue.text = "\(pressure) hpa"
         }
     }
     
     private func bindForecast() {
         
         let viewModel = ForecastViewModel()
-        
-        viewModel.output.map{$0.list ?? []}
-            .bind(to: tblVwDailyWeather.rx.items(cellIdentifier: DailyTableViewCell.identifier, cellType: DailyTableViewCell.self)) { index, item, cell in
-                cell.img.image = UIImage(systemName: "ticket")
-                cell.label.text = item.dtTxt
-            }.disposed(by: disposeBag)
-        
-        viewModel.output.map{$0.list ?? []}
+   
+        viewModel.filtered.map{$0.hourly}//listData
             .bind(to: cltVwHourlyWeather.rx.items(cellIdentifier: HourlyCollectionViewCell.identifier, cellType: HourlyCollectionViewCell.self)) { index, item, cell in
-                
-                
-                self.displayForecast(item, cell)
-                
+                self.displayHourlyForecast(item, cell)
             }.disposed(by: disposeBag)
+        
+        viewModel.filtered.map{$0.daily}//listData
+            .bind(to: tblVwDailyWeather.rx.items(cellIdentifier: DailyTableViewCell.identifier, cellType: DailyTableViewCell.self)) { index, item, cell in
+                self.displayDailyForecast(item, cell)
+            }.disposed(by: disposeBag)
+        
         
     }
-    private func displayForecast(_ item: List, _ cell: HourlyCollectionViewCell) {
+    private func displayHourlyForecast(_ item: List, _ cell: HourlyCollectionViewCell) {
+
+        guard let main = item.main , let temp = main.temp
+            , let weather = item.weather, let imageName = weather[0].icon
+            , let dtTxt = item.dtTxt, let date = dtTxt.toDate()
+        else {return}
+
+        cell.lblTime.text = date.dtToTimeWithLetter(36000)
+        let idx = imageName.index(imageName.startIndex, offsetBy: 1)
+        cell.img.image = UIImage(named: imageName[...idx]+"d")
+        cell.label.text = "\(Temperature(kelvin: temp).toCelcius)º"
         
-        cell.lblTime.text = item.dtTxt
-        cell.img.image = UIImage(named: "02d")
-        guard let main = item.main , let temp = main.temp else {return}
-        cell.label.text = "\(Temperature(kelvin: temp).toCelcius)"
+    }
+    private func displayDailyForecast(_ item: List, _ cell: DailyTableViewCell) {
+        guard let main = item.main , let tempMax = main.tempMax, let tempMin = main.tempMin
+            , let weather = item.weather, let imageName = weather[0].icon
+            , let dtTxt = item.dtTxt, let date = dtTxt.toDate()
+        else {return}
         
+        cell.backgroundColor = .clear
+        cell.lblDay.text = date.toDayKR()
+        let idx = imageName.index(imageName.startIndex, offsetBy: 1)
+        cell.img.image = UIImage(named: imageName[...idx]+"d")
+        cell.label.text = "최고 \(Temperature(kelvin: tempMin).toCelcius)º 최저 \(Temperature(kelvin: tempMax).toCelcius)º"
     }
     
 }

@@ -14,13 +14,12 @@ class DailyTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.backgroundColor = .green
     }
     
     let lblDay : UILabel = {
         let label = UILabel()
         label.text = "요일"
-        label.textColor = UIColor.gray
+        label.textColor = .white
         return label
     }()
     let img : UIImageView = { // 이미지 생성
@@ -32,7 +31,8 @@ class DailyTableViewCell: UITableViewCell {
     let label : UILabel = {
         let label = UILabel()
         label.text = "최대 최소 기온"
-        label.textColor = UIColor.gray
+        label.textColor = .white
+        label.textAlignment = .right
         return label
     }()
     

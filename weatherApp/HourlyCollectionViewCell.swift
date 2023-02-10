@@ -31,6 +31,7 @@ class HourlyCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "날씨"
         label.textColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 20)
         label.textAlignment = .center
         return label
     }()

@@ -29,7 +29,9 @@
 		A43476022994F89D0001EC8F /* Temperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43476012994F89D0001EC8F /* Temperature.swift */; };
 		A43476082995182E0001EC8F /* DailyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43476072995182E0001EC8F /* DailyTableViewCell.swift */; };
 		A434760A299545E80001EC8F /* HourlyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4347609299545E80001EC8F /* HourlyCollectionViewCell.swift */; };
-		A434760C299564D10001EC8F /* extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A434760B299564D10001EC8F /* extensions.swift */; };
+		A434760C299564D10001EC8F /* Date+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A434760B299564D10001EC8F /* Date+extensions.swift */; };
+		A43476102995F1DF0001EC8F /* imageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A434760F2995F1DF0001EC8F /* imageManager.swift */; };
+		A43476142996259C0001EC8F /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A43476122996259C0001EC8F /* CoreData.xcdatamodeld */; };
 		B2A76228798CA4B69C5D1389 /* Pods_weatherAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A851C2CACABAFF2C3A37C753 /* Pods_weatherAppTests.framework */; };
 		FC06C940422631E1C4AADA83 /* Pods_weatherApp_weatherAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD8A97744F25F746DEA60399 /* Pods_weatherApp_weatherAppUITests.framework */; };
 /* End PBXBuildFile section */
@@ -81,7 +83,9 @@
 		A43476012994F89D0001EC8F /* Temperature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temperature.swift; sourceTree = "<group>"; };
 		A43476072995182E0001EC8F /* DailyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTableViewCell.swift; sourceTree = "<group>"; };
 		A4347609299545E80001EC8F /* HourlyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyCollectionViewCell.swift; sourceTree = "<group>"; };
-		A434760B299564D10001EC8F /* extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extensions.swift; sourceTree = "<group>"; };
+		A434760B299564D10001EC8F /* Date+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extensions.swift"; sourceTree = "<group>"; };
+		A434760F2995F1DF0001EC8F /* imageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageManager.swift; sourceTree = "<group>"; };
+		A43476132996259C0001EC8F /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
 		A851C2CACABAFF2C3A37C753 /* Pods_weatherAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_weatherAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD8A97744F25F746DEA60399 /* Pods_weatherApp_weatherAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_weatherApp_weatherAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBAB939EB056F75FEC75A78F /* Pods-weatherApp-weatherAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-weatherApp-weatherAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-weatherApp-weatherAppUITests/Pods-weatherApp-weatherAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -165,6 +169,7 @@
 		A434759E29929E570001EC8F /* weatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				A43476112996256C0001EC8F /* CoreData */,
 				A434759F29929E570001EC8F /* AppDelegate.swift */,
 				A43475A129929E570001EC8F /* SceneDelegate.swift */,
 				A43475E72993A1380001EC8F /* Data */,
@@ -239,9 +244,18 @@
 			isa = PBXGroup;
 			children = (
 				A43476012994F89D0001EC8F /* Temperature.swift */,
-				A434760B299564D10001EC8F /* extensions.swift */,
+				A434760B299564D10001EC8F /* Date+extensions.swift */,
+				A434760F2995F1DF0001EC8F /* imageManager.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		A43476112996256C0001EC8F /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				A43476122996259C0001EC8F /* CoreData.xcdatamodeld */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -495,12 +509,14 @@
 				A43475E92993A1A60001EC8F /* ForecastAPIX.swift in Sources */,
 				A43476022994F89D0001EC8F /* Temperature.swift in Sources */,
 				A43475E0299329320001EC8F /* searchBar.swift in Sources */,
-				A434760C299564D10001EC8F /* extensions.swift in Sources */,
+				A43476142996259C0001EC8F /* CoreData.xcdatamodeld in Sources */,
+				A434760C299564D10001EC8F /* Date+extensions.swift in Sources */,
 				A43475F92994D6A50001EC8F /* WeatherAPIModel.swift in Sources */,
 				A43475EC2993A33D0001EC8F /* ForecastAPIModel.swift in Sources */,
 				A434760A299545E80001EC8F /* HourlyCollectionViewCell.swift in Sources */,
 				A43475FB2994D7020001EC8F /* APIHeader.swift in Sources */,
 				A43475FE2994E8290001EC8F /* ForecastViewModel.swift in Sources */,
+				A43476102995F1DF0001EC8F /* imageManager.swift in Sources */,
 				A43475A029929E570001EC8F /* AppDelegate.swift in Sources */,
 				A43475DE2992AA440001EC8F /* TestViewController.swift in Sources */,
 				A43475E429937EFB0001EC8F /* WeatherViewModel.swift in Sources */,
@@ -876,6 +892,19 @@
 			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		A43476122996259C0001EC8F /* CoreData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A43476132996259C0001EC8F /* CoreData.xcdatamodel */,
+			);
+			currentVersion = A43476132996259C0001EC8F /* CoreData.xcdatamodel */;
+			path = CoreData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = A434759429929E570001EC8F /* Project object */;
 }

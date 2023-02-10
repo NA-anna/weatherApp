@@ -29,7 +29,7 @@ class WeatherViewModel {
             "lon": "\(location.longitude)",
             "lat": "\(location.latitude)",
             "appid": WeatherAPIHeader.apiKey,
-            "lang": "kr",
+            //"lang": "kr",
         ]
 
         return Observable.create { observer -> Disposable in
@@ -39,7 +39,7 @@ class WeatherViewModel {
                        method: .get,
                        parameters:  parameters
             ).responseDecodable(of: WeatherInfo.self) { response in
-                debugPrint(response)
+//                debugPrint(response)
                 switch response.result {
                 case .success(let data):
                     observer.onNext(data)
