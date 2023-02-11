@@ -38,20 +38,22 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.cellSetting()
+        
+        self.addContentView()
+        self.autoLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func cellSetting() {
-        
+    private func addContentView() {
         contentView.addSubview(lblTime)
         contentView.addSubview(img)
         contentView.addSubview(label)
-        img.contentMode = .scaleToFill
+    }
+    private func autoLayout() {
         
+        img.contentMode = .scaleToFill
         lblTime.snp.makeConstraints { make in
             make.leading.top.trailing.equalToSuperview()//equalTo(0)
         }

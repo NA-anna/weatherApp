@@ -201,8 +201,8 @@ class ViewController: UIViewController {
         //searchController.searchBar.backgroundColor = .systemBackground
         
         // Navigation Controller
-        //self.navigationItem.title = "날씨"
-        self.title = "날씨"
+        self.navigationItem.title = "날씨"
+        //self.title = "날씨"
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.searchController = searchController
         
@@ -254,13 +254,14 @@ extension ViewController {
     // layout by Snapkit
     private func autoLayout() {
         scrollView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview()//(self.view.safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.bottom.equalToSuperview()
-            //make.edges.equalToSuperview()
+            //make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            //make.leading.trailing.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
         contentView.snp.makeConstraints { (make) in
-            make.width.equalToSuperview()
-            make.centerX.top.bottom.equalToSuperview()
+//            make.width.equalToSuperview()
+//            make.centerX.top.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
         lblCity.snp.makeConstraints { make in
             make.leading.top.trailing.equalToSuperview()

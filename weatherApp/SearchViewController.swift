@@ -21,8 +21,8 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = .systemBackground
         
+        // autoLayout
         self.view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -31,18 +31,15 @@ class SearchViewController: UIViewController {
         self.tableView.dataSource = self
         
         
-        
+        print("하하", cityList.count)
     }
-    
-
 
 }
 extension SearchViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cityList.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -50,7 +47,6 @@ extension SearchViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchTableViewCell", for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
         
         let city = cityList[indexPath.row]
-        print(city, ";" ,indexPath.row)
         cell.backgroundColor = .clear
         cell.setValues(element: city, index : indexPath.row)
 
