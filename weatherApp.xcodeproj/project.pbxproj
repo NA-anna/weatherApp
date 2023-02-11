@@ -173,6 +173,7 @@
 			children = (
 				A434759F29929E570001EC8F /* AppDelegate.swift */,
 				A43475A129929E570001EC8F /* SceneDelegate.swift */,
+				A4B062482997EE2A00113BB3 /* Config */,
 				A43475E72993A1380001EC8F /* Data */,
 				A43475EA2993A2F60001EC8F /* Model */,
 				A43475FF2994E8F30001EC8F /* View */,
@@ -208,7 +209,6 @@
 			isa = PBXGroup;
 			children = (
 				A434761C29962C3A0001EC8F /* citylist.json */,
-				A43475FA2994D7020001EC8F /* APIHeader.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -251,6 +251,14 @@
 				A434760B299564D10001EC8F /* Date+extensions.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		A4B062482997EE2A00113BB3 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				A43475FA2994D7020001EC8F /* APIHeader.swift */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
