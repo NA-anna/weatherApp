@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     // RxSwift - observable 종료 후 메모리 누수를 막기 위해 이를 담아 해제해줄 disposeBag을 만듬
     var disposeBag = DisposeBag()
     
-    var defaultBackgroundColor = UIColor.systemBackground//UIColor(red: 114/255, green: 145/255, blue: 192/255, alpha: 1)
+    var defaultBackgroundColor = UIColor(red: 114/255, green: 145/255, blue: 192/255, alpha: 1)
     
     // for CollectionView 간격
     let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -27,6 +27,12 @@ class ViewController: UIViewController {
     let scrollView = UIScrollView()
     let contentView = UIView()
     
+    private let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "도시 검색"
+        searchBar.searchBarStyle = .minimal
+        return searchBar
+    }()
     // UILabel()
     lazy var lblCity = { () -> UILabel in
         let label = UILabel()
@@ -193,7 +199,7 @@ class ViewController: UIViewController {
         
         
         // background color
-        //view.backgroundColor = defaultBackgroundColor
+        view.backgroundColor = defaultBackgroundColor //.systemBackground
         
         // -- UISearchController
         let searchController = UISearchController(searchResultsController: SearchViewController())
@@ -201,15 +207,11 @@ class ViewController: UIViewController {
         //searchController.searchBar.backgroundColor = .systemBackground
         
         // Navigation Controller
-        self.navigationItem.title = "날씨"
-        //self.title = "날씨"
-        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationItem.title = "날씨"  //self.title = "날씨"
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationItem.searchController = searchController
         
         
-        
-        
-        cltVwHourlyWeather.delegate = self
         
         
         // UI
@@ -220,9 +222,13 @@ class ViewController: UIViewController {
         bindWeather()
         bindForecast()
         
+        bindSearch()
+        
+        cltVwHourlyWeather.delegate = self
     }
     
 }
+
 
 extension ViewController {
     
@@ -230,6 +236,7 @@ extension ViewController {
     private func addSubView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
+        contentView.addSubview(searchBar)
         _ = [lblCity, lblDegree, lblWeather, lblMaxMinDegree,
              //cltVwHourlyWeather,
              tblVwHourlyWeather, tblVwDailyWeather,
@@ -254,18 +261,22 @@ extension ViewController {
     // layout by Snapkit
     private func autoLayout() {
         scrollView.snp.makeConstraints { (make) in
-            //make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
-            //make.leading.trailing.bottom.equalToSuperview()
-            make.edges.equalToSuperview()
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.bottom.equalToSuperview()
+            
+//            make.edges.equalToSuperview()
         }
         contentView.snp.makeConstraints { (make) in
-//            make.width.equalToSuperview()
-//            make.centerX.top.bottom.equalToSuperview()
             make.edges.equalToSuperview()
         }
-        lblCity.snp.makeConstraints { make in
+        searchBar.snp.makeConstraints { make in
             make.leading.top.trailing.equalToSuperview()
-            //make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+        }
+        lblCity.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(self.searchBar.snp.bottom)
+            
+            //make.leading.top.trailing.equalToSuperview()
         }
         lblDegree.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -353,8 +364,9 @@ extension ViewController {
             make.top.equalTo(lblPressureTitle.snp.bottom)
         }
     }
-    
-    
+}
+
+extension ViewController {
     // Data
     private func bindWeather() {
         
@@ -382,7 +394,7 @@ extension ViewController {
         if let cityName = weatherInfo.name,
            let weather = weatherInfo.weather,
            let main = weatherInfo.main,
-           let weatherName = weather[0].main,
+           var weatherName = weather[0].main,
            let temp = main.temp,
            let tempMax = main.tempMax,
            let tempMin = main.tempMin,
@@ -392,7 +404,7 @@ extension ViewController {
            let wind = weatherInfo.wind, let speed = wind.speed,
            let pressure = main.pressure
         {
-            print(weatherName, weatherName.lowercased())
+            if weatherName == "Clear" { weatherName = "Sunny"}
             if let backgroundImage = UIImage(named: weatherName.lowercased()) {
                 self.scrollView.backgroundColor = UIColor(patternImage: backgroundImage)
             }
@@ -418,7 +430,7 @@ extension ViewController {
     private func bindForecast() {
         
         let viewModel = ForecastViewModel()
-   
+        
         viewModel.filtered.map{$0.hourly}//listData
             .bind(to: cltVwHourlyWeather.rx.items(cellIdentifier: HourlyCollectionViewCell.identifier, cellType: HourlyCollectionViewCell.self)) { index, item, cell in
                 self.displayHourlyForecast(item, cell)
@@ -432,12 +444,12 @@ extension ViewController {
         
     }
     private func displayHourlyForecast(_ item: List, _ cell: HourlyCollectionViewCell) {
-
+        
         guard let main = item.main , let temp = main.temp
-            , let weather = item.weather, let imageName = weather[0].icon
-            , let dtTxt = item.dtTxt, let date = dtTxt.toDate()
+                , let weather = item.weather, let imageName = weather[0].icon
+                , let dtTxt = item.dtTxt, let date = dtTxt.toDate()
         else {return}
-
+        
         cell.lblTime.text = date.dtToTimeWithLetter(36000)
         let idx = imageName.index(imageName.startIndex, offsetBy: 1)
         cell.img.image = UIImage(named: imageName[...idx]+"d")
@@ -446,8 +458,8 @@ extension ViewController {
     }
     private func displayDailyForecast(_ item: List, _ cell: DailyTableViewCell) {
         guard let main = item.main , let tempMax = main.tempMax, let tempMin = main.tempMin
-            , let weather = item.weather, let imageName = weather[0].icon
-            , let dtTxt = item.dtTxt, let date = dtTxt.toDate()
+                , let weather = item.weather, let imageName = weather[0].icon
+                , let dtTxt = item.dtTxt, let date = dtTxt.toDate()
         else {return}
         
         cell.backgroundColor = .clear
@@ -457,26 +469,39 @@ extension ViewController {
         cell.label.text = "최고 \(Temperature(kelvin: tempMin).toCelcius)º 최저 \(Temperature(kelvin: tempMax).toCelcius)º"
     }
     
+    
+    func bindSearch() {
+        self.searchBar
+            .rx.text.orEmpty
+            .debounce(RxTimeInterval.microseconds(5), scheduler: MainScheduler.instance)   //0.5초 기다림
+            .distinctUntilChanged()   // 같은 아이템을 받지 않는기능
+            .subscribe(onNext: { t in
+                
+               // self.items = self.cityList.filter{ $0.hasPrefix(t) }
+               // self.tableView.reloadData()
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
- 
+
 
 extension ViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let height : CGFloat = collectionView.frame.height
-         
-         return CGSize(width: height*2/3, height: height)
+        
+        return CGSize(width: height*2/3, height: height)
     }
     
     // case A
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
-
+    
 }
- 
+
 
 
 //

@@ -18,6 +18,7 @@ class SearchViewController: UIViewController {
         return tableView
     }()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,13 +30,11 @@ class SearchViewController: UIViewController {
         }
         
         self.tableView.dataSource = self
-        
-        
-        print("하하", cityList.count)
+        self.tableView.delegate = self
     }
 
 }
-extension SearchViewController: UITableViewDataSource {
+extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -53,5 +52,10 @@ extension SearchViewController: UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell: SearchTableViewCell = tableView.cellForRow(at: indexPath) as? SearchTableViewCell else { return }
+     
+        print("시티는?", cell.lblCity)
+    }
     
 }
