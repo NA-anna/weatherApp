@@ -21,11 +21,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         let mainViewController = ViewController() //SearchViewController() 
-        window?.rootViewController = mainViewController
+//        window?.rootViewController = mainViewController
         
         //NavigationController 추가
-//        let navigationController = UINavigationController(rootViewController: mainViewController)
-//        window?.rootViewController = navigationController
+        let navigationController = UINavigationController(rootViewController: mainViewController)
+        window?.rootViewController = navigationController
         //------------------------
         
         window?.makeKeyAndVisible()

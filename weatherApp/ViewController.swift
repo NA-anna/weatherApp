@@ -23,16 +23,23 @@ class ViewController: UIViewController {
     
     
     
+    
+    
     // UIScrollView
     let scrollView = UIScrollView()
     let contentView = UIView()
     
-    private let searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.placeholder = "도시 검색"
-        searchBar.searchBarStyle = .minimal
-        return searchBar
-    }()
+//    private let searchBar: UISearchBar = {
+//        let searchBar = UISearchBar()
+//        searchBar.placeholder = "도시 검색"
+//        searchBar.searchBarStyle = .minimal
+//        return searchBar
+//    }()
+    
+//private let searchView = UIView()
+    
+    
+    
     // UILabel()
     lazy var lblCity = { () -> UILabel in
         let label = UILabel()
@@ -192,6 +199,7 @@ class ViewController: UIViewController {
         label.lineBreakMode = .byWordWrapping
         return label
     }()
+
     
     
     override func viewDidLoad() {
@@ -199,11 +207,17 @@ class ViewController: UIViewController {
         
         
         // background color
-        view.backgroundColor = defaultBackgroundColor //.systemBackground
+        view.backgroundColor = .systemBackground
         
-        // -- UISearchController
-        let searchController = UISearchController(searchResultsController: SearchViewController())
-        searchController.searchBar.placeholder = "도시 검색"
+        // UISearchController
+        let resultsController = SearchResultsController()
+        let searchController = UISearchController(searchResultsController: resultsController)
+        searchController.searchResultsUpdater = resultsController
+        searchController.searchBar.placeholder = "도시tl 검색"
+        searchController.searchBar.showsCancelButton = false
+        
+        //self.searchView.addSubview(searchController.searchBar)
+        
         //searchController.searchBar.backgroundColor = .systemBackground
         
         // Navigation Controller
@@ -211,7 +225,7 @@ class ViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationItem.searchController = searchController
         
-        
+        configureSearchController()
         
         
         // UI
@@ -222,7 +236,7 @@ class ViewController: UIViewController {
         bindWeather()
         bindForecast()
         
-        bindSearch()
+        
         
         cltVwHourlyWeather.delegate = self
     }
@@ -236,12 +250,11 @@ extension ViewController {
     private func addSubView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubview(searchBar)
-        _ = [lblCity, lblDegree, lblWeather, lblMaxMinDegree,
-             //cltVwHourlyWeather,
+        _ = [
+             lblCity, lblDegree, lblWeather, lblMaxMinDegree,
+             cltVwHourlyWeather,
              tblVwHourlyWeather, tblVwDailyWeather,
              mapView].map{ self.contentView.addSubview($0)}
-        contentView.addSubview(cltVwHourlyWeather)
         contentView.addSubview(vwHuminity)
         vwHuminity.addSubview(lblHuminityTitle)
         vwHuminity.addSubview(lblHuminityValue)
@@ -269,14 +282,14 @@ extension ViewController {
         contentView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-        searchBar.snp.makeConstraints { make in
-            make.leading.top.trailing.equalToSuperview()
-        }
+//        searchView.snp.makeConstraints { make in
+//            make.leading.top.trailing.equalToSuperview()
+//        }
         lblCity.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(self.searchBar.snp.bottom)
+//            make.leading.trailing.equalToSuperview()
+//            make.top.equalTo(self.searchView.snp.bottom)
             
-            //make.leading.top.trailing.equalToSuperview()
+            make.leading.top.trailing.equalToSuperview()
         }
         lblDegree.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -470,18 +483,7 @@ extension ViewController {
     }
     
     
-    func bindSearch() {
-        self.searchBar
-            .rx.text.orEmpty
-            .debounce(RxTimeInterval.microseconds(5), scheduler: MainScheduler.instance)   //0.5초 기다림
-            .distinctUntilChanged()   // 같은 아이템을 받지 않는기능
-            .subscribe(onNext: { t in
-                
-               // self.items = self.cityList.filter{ $0.hasPrefix(t) }
-               // self.tableView.reloadData()
-            })
-            .disposed(by: disposeBag)
-    }
+
 }
 
 
