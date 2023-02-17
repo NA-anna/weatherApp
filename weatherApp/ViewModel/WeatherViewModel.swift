@@ -20,6 +20,11 @@ class WeatherViewModel {
         self.output = WeatherViewModel.getRequest(location)
     }
     
+    init(location: Location) {
+        self.location = location
+        self.output = WeatherViewModel.getRequest(location)
+    }
+    
     
     static func getRequest(_ location: Location) -> Observable<WeatherInfo> {
     
@@ -43,6 +48,7 @@ class WeatherViewModel {
                 switch response.result {
                 case .success(let data):
                     observer.onNext(data)
+                    observer.onCompleted()
                 case .failure(let error):
                     observer.onError(error)
                 }

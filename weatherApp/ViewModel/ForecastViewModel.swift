@@ -20,8 +20,15 @@ class ForecastViewModel {
     
     init() {
         self.location = Location(latitude: 36.783611, longitude: 127.004173) //대한민국 아산
-        self.output = ForecastViewModel.getRequest(location)
-        //Output(result: WeatherViewModel.getRequest(location))
+        self.output = ForecastViewModel.getRequest(location)  //Output(result: WeatherViewModel.getRequest(location))
+        self.listData = output.map{$0.list ?? []}
+        
+        self.filtered = ForecastViewModel.getData(location)
+    }
+    
+    init(location: Location) {
+        self.location = location
+        self.output = ForecastViewModel.getRequest(location)  //Output(result: WeatherViewModel.getRequest(location))
         self.listData = output.map{$0.list ?? []}
         
         self.filtered = ForecastViewModel.getData(location)
@@ -91,15 +98,7 @@ class ForecastViewModel {
 //                debugPrint(response)
                 switch response.result {
                 case .success(let data):
-                    //guard let list = data.list else {return}
                     let filtered = Filtered(data: data)
-//                    _ = filtered.hourly.filter({ element in
-//                        guard let dtTxt = element.dtTxt else { print("%%%%")
-//                            return false}
-//                        print("******")
-//                        print(dtTxt.toDate() ?? Date(), ";", Date() )
-//                        return dtTxt.toDate() ?? Date() > Date()
-//                    })
                     observer.onNext(filtered)
                 case .failure(let error):
                     observer.onError(error)
@@ -131,6 +130,7 @@ class ForecastViewModel {
                 switch response.result {
                 case .success(let data):
                     observer.onNext(data)
+                    observer.onCompleted()
                 case .failure(let error):
                     observer.onError(error)
                 }
